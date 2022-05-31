@@ -11,7 +11,7 @@ import Test.Hspec
 
 spec :: Spec
 spec = do
-  describe "validateSnsNotification" $ do
+  describe "validateSnsMessage" $ do
     it "successfully validates an SNS notification" $ do
       let message = "Some message"
       x <- validateSnsMessage $ SNSPayload
