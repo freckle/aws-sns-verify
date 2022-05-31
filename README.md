@@ -1,6 +1,5 @@
 # sns-webhook
 
-
 ## Sign For Test
 
 Signatures for testing are produced with the self signed certificate in this
