@@ -7,11 +7,11 @@ cabal-version: 1.12
 name:           sns-webhook
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/sns-webhook#readme>
-homepage:       https://github.com/githubuser/sns-webhook#readme
-bug-reports:    https://github.com/githubuser/sns-webhook/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2022 Author name here
+homepage:       https://github.com/freckle/sns-webhook#readme
+bug-reports:    https://github.com/freckle/sns-webhook/issues
+author:         Freckle
+maintainer:     engineering@freckle.com
+copyright:      2022 Freckle By Renaissance
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
@@ -21,7 +21,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/sns-webhook
+  location: https://github.com/freckle/sns-webhook
 
 library
   exposed-modules:

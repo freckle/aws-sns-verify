@@ -1,27 +1,16 @@
-name:                sns-webhook
-version:             0.1.0.0
-github:              "githubuser/sns-webhook"
-license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2022 Author name here"
-
+name: sns-webhook
+version: 0.1.0.0
+github: "freckle/sns-webhook"
+license: BSD3
+author: "Freckle"
+maintainer: "engineering@freckle.com"
+copyright: "2022 Freckle By Renaissance"
 extra-source-files:
-- README.md
-- ChangeLog.md
-
-# Metadata used when publishing your package
-# synopsis:            Short description of your package
-# category:            Web
-
-# To avoid duplicated efforts in documentation and dealing with the
-# complications of embedding Haddock markup inside cabal files, it is
-# common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/sns-webhook#readme>
-
+  - README.md
+  - ChangeLog.md
+description: Please see the README on GitHub at <https://github.com/githubuser/sns-webhook#readme>
 dependencies:
-- base >= 4.7 && < 5
-
+  - base >= 4.7 && < 5
 library:
   source-dirs: src
   dependencies:
@@ -35,16 +24,15 @@ library:
     - x509
     - x509-validation
     - http-types
-
 tests:
   sns-webhook-test:
-    main:                Main.hs
-    source-dirs:         test
+    main: Main.hs
+    source-dirs: test
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - sns-webhook
-    - hspec
-    - text
+      - sns-webhook
+      - hspec
+      - text
