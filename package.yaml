@@ -13,6 +13,8 @@ dependencies:
   - base >= 4.7 && < 5
 library:
   source-dirs: src
+  other-modules:
+    - Amazon.SNS.Webhook.Prelude
   dependencies:
     - aeson
     - bytestring
@@ -36,3 +38,5 @@ tests:
       - sns-webhook
       - hspec
       - text
+      - aeson-qq
+      - aeson

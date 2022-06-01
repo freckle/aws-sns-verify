@@ -29,7 +29,7 @@ library
       Amazon.SNS.Webhook.Payload
       Amazon.SNS.Webhook.Validate
   other-modules:
-      Paths_sns_webhook
+      Amazon.SNS.Webhook.Prelude
   hs-source-dirs:
       src
   build-depends:
@@ -51,12 +51,15 @@ test-suite sns-webhook-test
   main-is: Main.hs
   other-modules:
       Amazon.SNS.Webhook.ValidateSpec
+      Amazon.SNS.WebhookSpec
       Paths_sns_webhook
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , aeson-qq
+    , base >=4.7 && <5
     , hspec
     , sns-webhook
     , text

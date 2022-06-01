@@ -50,7 +50,27 @@ spec = do
                 "SynthesisTaskNotification { TaskId: 680a1f1b-f3ae-4474-aa8f-3b6dfe52e656, Status: COMPLETED }"
             }
           }
-      go `shouldThrow` anyException
+      go `shouldThrow` (\InvalidPayload{} -> True)
+
+    it "fails to validate a bad PEM" $ do
+      let
+        go = validateSnsMessage $ SNSPayload
+          { snsMessage = "Some message"
+          , snsMessageId = "corrupt"
+          , snsTimestamp = "2022-05-18T14:52:26.952Z"
+          , snsTopicArn = "arn:aws:sns:us-west-2:123456789012:MyTopic"
+          , snsType = "Notification"
+          , snsSignatureVersion = "1"
+          , snsSignature =
+            "Dg24trcOUiLjclt5JwyJS0JEOnEEbi6P30XS6KBxMCwzZ08a04UwjaFTW9Ae8xurhBS5YESz1fY28vTwvEmxh/20WmB3bWIDOMp9v5RI8XSZOvpMm+hdQJ43VqGhEDyAvRU6iCDLihDlZNc/sBCwl9X0H4kh/8vIElRif9gFBbYI94ZHGgqEV+Zc3gVKo9Udrl/MxNvMVadsO/+/oPVUeWibQr3xfGK95oc/ocuNAgi0MOxZmLVnibHu36KOTSvy2qSLonnRRFcbaauYZJ4js7oTq+1ujXNO72oPLaeG3pVJ2grqMc5z8tKQxFnSTE3es7wQarU/CLrbO8j0isbnWw=="
+          , snsSigningCertURL = "https://freckle.com/404.pem"
+          , snsTypePayload = Notification $ SNSNotification
+            { snsSubject =
+              Just
+                "SynthesisTaskNotification { TaskId: 680a1f1b-f3ae-4474-aa8f-3b6dfe52e656, Status: COMPLETED }"
+            }
+          }
+      go `shouldThrow` (\BadPem{} -> True)
 
     it "successfully validates an SNS subscription" $ do
       -- pendingWith "need valid subscription payload"

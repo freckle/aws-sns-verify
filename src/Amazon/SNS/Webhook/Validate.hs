@@ -1,6 +1,7 @@
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE RecordWildCards #-}
@@ -12,18 +13,14 @@ module Amazon.SNS.Webhook.Validate
   , ValidSNSMessage(..)
   ) where
 
-import Prelude
+import Amazon.SNS.Webhook.Prelude
 
 import Amazon.SNS.Webhook.Payload
-import Control.Exception (Exception, throwIO)
 import Control.Monad (when)
-import Control.Monad.IO.Class (MonadIO, liftIO)
-import Data.ByteArray.Encoding
-import Data.ByteString (ByteString)
+import Data.ByteArray.Encoding (Base(Base64), convertFromBase)
 import qualified Data.ByteString.Lazy as LBS
 import Data.Maybe (catMaybes)
 import Data.PEM (pemContent, pemParseLBS)
-import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Text.Encoding (encodeUtf8)
 import Data.X509
@@ -65,21 +62,20 @@ validateSnsMessage payload@SNSPayload {..} = do
       (certPubKey $ getCertificate signedCert)
       (unsignedSignature payload)
       signature
+  liftIO $ print (unsignedSignature payload)
   case valid of
     SignaturePass -> pure $ case snsTypePayload of
       Notification{} -> SNSMessage snsMessage
       SubscriptionConfirmation x -> SNSSubscribe x
       UnsubscribeConfirmation x -> SNSUnsubscribe x
-    SignatureFailed err -> liftIO $ throwIO $ InvalidPayload err
+    SignatureFailed err -> throwIO $ InvalidPayload err
 
 retrieveCertificate :: MonadIO m => SNSPayload -> m SignedCertificate
 retrieveCertificate SNSPayload {..} = do
   response <- httpLbs $ parseRequest_ $ T.unpack snsSigningCertURL
   pems <- unTry BadPem $ pemParseLBS $ getResponseBody response
   cert <-
-    fromMaybeM (liftIO $ throwIO $ BadPem "Empty List")
-    $ pemContent
-    <$> headMay pems
+    fromMaybeM (throwIO $ BadPem "Empty List") $ pemContent <$> headMay pems
   unTry BadCert $ decodeSignedCertificate cert
 
 unsignedSignature :: SNSPayload -> ByteString
@@ -116,9 +112,9 @@ handleSubscription = \case
   SNSSubscribe SNSSubscription {..} -> do
     response <- httpLbs $ parseRequest_ $ T.unpack snsSubscribeURL
     when (getResponseStatusCode response >= 300) $ do
-      liftIO $ throwIO $ BadSubscription response
-    liftIO $ throwIO SubscribeMessageResponded
-  SNSUnsubscribe{} -> liftIO $ throwIO UnsubscribeMessage
+      throwIO $ BadSubscription response
+    throwIO SubscribeMessageResponded
+  SNSUnsubscribe{} -> throwIO UnsubscribeMessage
 
 data SNSNotificationValidationError
   = BadPem String
@@ -132,9 +128,3 @@ data SNSNotificationValidationError
   | SubscribeMessageResponded
   deriving stock Show
   deriving anyclass Exception
-
-unTry :: (MonadIO m, Exception e) => (a -> e) -> Either a b -> m b
-unTry e = either (liftIO . throwIO . e) pure
-
-fromMaybeM :: Monad m => m a -> Maybe a -> m a
-fromMaybeM f = maybe f pure

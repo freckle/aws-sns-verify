@@ -1,21 +1,21 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RankNTypes #-}
 
 module Amazon.SNS.Webhook.Payload
-  ( parseSNSValueViaMessageType
-  , SNSPayload(..)
+  ( SNSPayload(..)
   , SNSType(..)
   , SNSNotification(..)
   , SNSSubscription(..)
   ) where
 
-import Prelude
+import Amazon.SNS.Webhook.Prelude
 
 import Data.Aeson
   ( FromJSON
-  , Value(Object)
   , defaultOptions
   , fieldLabelModifier
   , genericParseJSON
@@ -23,40 +23,7 @@ import Data.Aeson
   , withObject
   , (.:)
   )
-import Data.Aeson.Types (parseEither)
-import Data.ByteString (ByteString)
-import Data.Text (Text)
 import GHC.Generics (Generic)
-
-parseSNSValueViaMessageType :: ByteString -> Value -> Either String SNSPayload
-parseSNSValueViaMessageType messageType =
-  parseEither $ withObject "SNSPayload" $ \o -> do
-    SNSPayload
-      <$> o
-      .: "Message"
-      <*> o
-      .: "MessageId"
-      <*> o
-      .: "Timestamp"
-      <*> o
-      .: "TopicArn"
-      <*> o
-      .: "Type"
-      <*> o
-      .: "SignatureVersion"
-      <*> o
-      .: "Signature"
-      <*> o
-      .: "SigningCertURL"
-      <*> parseType o
- where
-  parseType o = case messageType of
-    "SubscriptionConfirmation" ->
-      SubscriptionConfirmation <$> parseJSON (Object o)
-    "UnsubscribeConfirmation" ->
-      UnsubscribeConfirmation <$> parseJSON (Object o)
-    "Notification" -> Notification <$> parseJSON (Object o)
-    msg -> fail $ "Unknown message type " <> show msg
 
 data SNSPayload = SNSPayload
   { snsMessage :: Text
@@ -69,6 +36,34 @@ data SNSPayload = SNSPayload
   , snsSigningCertURL :: Text
   , snsTypePayload :: SNSType
   }
+
+instance FromJSON SNSPayload where
+  parseJSON v = parse v
+   where
+    parse = withObject "SNSPayload" $ \o -> do
+      payloadType <- o .: "Type"
+      SNSPayload
+        <$> o
+        .: "Message"
+        <*> o
+        .: "MessageId"
+        <*> o
+        .: "Timestamp"
+        <*> o
+        .: "TopicArn"
+        <*> pure payloadType
+        <*> o
+        .: "SignatureVersion"
+        <*> o
+        .: "Signature"
+        <*> o
+        .: "SigningCertURL"
+        <*> parseType payloadType
+    parseType = \case
+      "SubscriptionConfirmation" -> SubscriptionConfirmation <$> parseJSON v
+      "UnsubscribeConfirmation" -> UnsubscribeConfirmation <$> parseJSON v
+      "Notification" -> Notification <$> parseJSON v
+      msg -> fail $ "Unknown message type " <> show msg
 
 data SNSType
   = Notification SNSNotification
