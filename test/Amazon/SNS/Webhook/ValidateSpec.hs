@@ -7,6 +7,7 @@ module Amazon.SNS.Webhook.ValidateSpec
 import Amazon.SNS.Webhook.Payload
 import Amazon.SNS.Webhook.Validate
 import Data.Text (Text)
+import Data.X509.Validation (SignatureFailure(..))
 import Test.Hspec
 
 spec :: Spec
@@ -30,7 +31,7 @@ spec = do
               "SynthesisTaskNotification { TaskId: 680a1f1b-f3ae-4474-aa8f-3b6dfe52e656, Status: COMPLETED }"
           }
         }
-      x `shouldBe` SNSMessage message
+      x `shouldBe` Right (SNSMessage message)
 
     it "fails to validate a currupt SNS notification" $ do
       let
@@ -50,7 +51,7 @@ spec = do
                 "SynthesisTaskNotification { TaskId: 680a1f1b-f3ae-4474-aa8f-3b6dfe52e656, Status: COMPLETED }"
             }
           }
-      go `shouldThrow` (\InvalidPayload{} -> True)
+      go `shouldReturn` Left (InvalidPayload SignatureInvalid)
 
     it "fails to validate a bad PEM" $ do
       let
@@ -70,7 +71,7 @@ spec = do
                 "SynthesisTaskNotification { TaskId: 680a1f1b-f3ae-4474-aa8f-3b6dfe52e656, Status: COMPLETED }"
             }
           }
-      go `shouldThrow` (\BadPem{} -> True)
+      go `shouldReturn` Left (BadPem "Empty List")
 
     it "successfully validates an SNS subscription" $ do
       -- pendingWith "need valid subscription payload"
@@ -94,7 +95,7 @@ spec = do
         , snsSigningCertURL = cert
         , snsTypePayload = SubscriptionConfirmation subscription
         }
-      x `shouldBe` SNSSubscribe subscription
+      x `shouldBe` Right (SNSSubscribe subscription)
 
     it "successfully validates an SNS unsubscribe" $ do
       -- pendingWith "need valid subscription payload"
@@ -118,7 +119,7 @@ spec = do
         , snsSigningCertURL = cert
         , snsTypePayload = UnsubscribeConfirmation subscription
         }
-      x `shouldBe` SNSUnsubscribe subscription
+      x `shouldBe` Right (SNSUnsubscribe subscription)
 
 cert :: Text
 cert =

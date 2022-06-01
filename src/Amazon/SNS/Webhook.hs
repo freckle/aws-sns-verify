@@ -37,7 +37,11 @@ requireSNSMessageJSON =
 --
 requireSNSMessage :: MonadIO m => Value -> m Text
 requireSNSMessage =
-  handleSubscription <=< validateSnsMessage <=< parseSNSPayload
+  unTry id
+    <=< handleSubscription
+    <=< unTry id
+    <=< validateSnsMessage
+    <=< parseSNSPayload
 
 parseSNSPayload :: MonadIO m => Value -> m SNSPayload
 parseSNSPayload = unTry BadJSONParse . fromResult . fromJSON

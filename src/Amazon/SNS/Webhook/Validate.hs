@@ -16,10 +16,9 @@ module Amazon.SNS.Webhook.Validate
 import Amazon.SNS.Webhook.Prelude
 
 import Amazon.SNS.Webhook.Payload
+import Control.Error
 import Control.Monad (when)
 import Data.ByteArray.Encoding (Base(Base64), convertFromBase)
-import qualified Data.ByteString.Lazy as LBS
-import Data.Maybe (catMaybes)
 import Data.PEM (pemContent, pemParseLBS)
 import qualified Data.Text as T
 import Data.Text.Encoding (encodeUtf8)
@@ -35,8 +34,7 @@ import Data.X509
 import Data.X509.Validation
   (SignatureFailure, SignatureVerification(..), verifySignature)
 import Network.HTTP.Simple
-  (Response, getResponseBody, getResponseStatusCode, httpLbs, parseRequest_)
-import Safe (headMay)
+  (getResponseBody, getResponseStatusCode, httpLbs, parseRequest_)
 
 data ValidSNSMessage
   = SNSMessage Text
@@ -51,8 +49,11 @@ data ValidSNSMessage
 --
 -- <https://docs.aws.amazon.com/sns/latest/dg/sns-verify-signature-of-message.html>
 --
-validateSnsMessage :: MonadIO m => SNSPayload -> m ValidSNSMessage
-validateSnsMessage payload@SNSPayload {..} = do
+validateSnsMessage
+  :: MonadIO m
+  => SNSPayload
+  -> m (Either SNSNotificationValidationError ValidSNSMessage)
+validateSnsMessage payload@SNSPayload {..} = runExceptT $ do
   signature <- unTry BadSignature $ convertFromBase Base64 $ encodeUtf8
     snsSignature
   signedCert <- retrieveCertificate payload
@@ -62,20 +63,22 @@ validateSnsMessage payload@SNSPayload {..} = do
       (certPubKey $ getCertificate signedCert)
       (unsignedSignature payload)
       signature
-  liftIO $ print (unsignedSignature payload)
   case valid of
     SignaturePass -> pure $ case snsTypePayload of
       Notification{} -> SNSMessage snsMessage
       SubscriptionConfirmation x -> SNSSubscribe x
       UnsubscribeConfirmation x -> SNSUnsubscribe x
-    SignatureFailed err -> throwIO $ InvalidPayload err
+    SignatureFailed e -> throwE $ InvalidPayload e
 
-retrieveCertificate :: MonadIO m => SNSPayload -> m SignedCertificate
+retrieveCertificate
+  :: MonadIO m
+  => SNSPayload
+  -> ExceptT SNSNotificationValidationError m SignedCertificate
 retrieveCertificate SNSPayload {..} = do
   response <- httpLbs $ parseRequest_ $ T.unpack snsSigningCertURL
   pems <- unTry BadPem $ pemParseLBS $ getResponseBody response
   cert <-
-    fromMaybeM (throwIO $ BadPem "Empty List") $ pemContent <$> headMay pems
+    fromMaybeM (throwE $ BadPem "Empty List") $ pemContent <$> headMay pems
   unTry BadCert $ decodeSignedCertificate cert
 
 unsignedSignature :: SNSPayload -> ByteString
@@ -106,25 +109,28 @@ unsignedSignature SNSPayload {..} =
     UnsubscribeConfirmation x ->
       (Nothing, Just $ snsToken x, Just $ snsSubscribeURL x)
 
-handleSubscription :: MonadIO m => ValidSNSMessage -> m Text
-handleSubscription = \case
+handleSubscription
+  :: MonadIO m
+  => ValidSNSMessage
+  -> m (Either SNSNotificationValidationError Text)
+handleSubscription = runExceptT . \case
   SNSMessage t -> pure t
   SNSSubscribe SNSSubscription {..} -> do
     response <- httpLbs $ parseRequest_ $ T.unpack snsSubscribeURL
     when (getResponseStatusCode response >= 300) $ do
-      throwIO $ BadSubscription response
-    throwIO SubscribeMessageResponded
-  SNSUnsubscribe{} -> throwIO UnsubscribeMessage
+      throwE $ BadSubscription ()
+    throwE SubscribeMessageResponded
+  SNSUnsubscribe{} -> throwE UnsubscribeMessage
 
 data SNSNotificationValidationError
   = BadPem String
   | BadSignature String
   | BadCert String
   | BadJSONParse String
-  | BadSubscription (Response LBS.ByteString)
+  | BadSubscription ()
   | InvalidPayload SignatureFailure
   | MissingMessageTypeHeader
   | UnsubscribeMessage
   | SubscribeMessageResponded
-  deriving stock Show
+  deriving stock (Show, Eq)
   deriving anyclass Exception
