@@ -5,12 +5,15 @@ license: BSD3
 author: "Freckle"
 maintainer: "engineering@freckle.com"
 copyright: "2022 Freckle By Renaissance"
-extra-source-files:
-  - README.md
-  - ChangeLog.md
 description: Please see the README on GitHub at <https://github.com/githubuser/sns-message-verify#readme>
+
+extra-doc-files:
+  - README.md
+  - CHANGELOG.md
+
 dependencies:
   - base >= 4.7 && < 5
+
 default-extensions:
   - BangPatterns
   - DataKinds
@@ -36,8 +39,9 @@ default-extensions:
   - StandaloneDeriving
   - TypeApplications
   - TypeFamilies
+
 library:
-  source-dirs: src
+  source-dirs: library
   other-modules:
     - Amazon.SNS.Verify.Prelude
   dependencies:
@@ -52,10 +56,11 @@ library:
     - x509
     - x509-validation
     - http-types
+
 tests:
   sns-message-verify-test:
     main: Main.hs
-    source-dirs: test
+    source-dirs: tests
     ghc-options:
       - -threaded
       - -rtsopts

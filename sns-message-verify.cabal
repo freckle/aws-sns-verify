@@ -1,4 +1,4 @@
-cabal-version: 1.12
+cabal-version: 1.18
 
 -- This file has been generated from package.yaml by hpack version 0.34.4.
 --
@@ -15,9 +15,9 @@ copyright:      2022 Freckle By Renaissance
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
-extra-source-files:
+extra-doc-files:
     README.md
-    ChangeLog.md
+    CHANGELOG.md
 
 source-repository head
   type: git
@@ -31,7 +31,7 @@ library
   other-modules:
       Amazon.SNS.Verify.Prelude
   hs-source-dirs:
-      src
+      library
   default-extensions:
       BangPatterns
       DataKinds
@@ -80,7 +80,7 @@ test-suite sns-message-verify-test
       Amazon.SNS.VerifySpec
       Paths_sns_message_verify
   hs-source-dirs:
-      test
+      tests
   default-extensions:
       BangPatterns
       DataKinds
