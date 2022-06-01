@@ -1,5 +1,12 @@
 # sns-message-verify
 
+```hs
+myEchoWebhook :: MonadHandler m => m ()
+myEchoWebhook = do
+  message <- verifySNSMessage =<< requireInsecureJsonBody
+  logDebugN message
+```
+
 ## Sign For Test
 
 Signatures for testing are produced with the self signed certificate in this
