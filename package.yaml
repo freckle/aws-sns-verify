@@ -90,7 +90,6 @@ tests:
       - aeson-qq
       - async
       - hspec
-      - http-conduit
       - http-types
       - sns-message-verify
       - text

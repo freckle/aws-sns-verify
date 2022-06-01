@@ -119,7 +119,6 @@ test-suite sns-message-verify-test
     , async
     , base >=4.7 && <5
     , hspec
-    , http-conduit
     , http-types
     , sns-message-verify
     , text

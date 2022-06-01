@@ -9,7 +9,7 @@ import Amazon.SNS.Verify.Validate
 import Data.X509.Validation (SignatureFailure(..))
 
 spec :: Spec
-spec = beforeAll_ initCertServer $ afterAll_ killCertServer $ do
+spec = around_ useCertServer $ do
   describe "validateSnsMessage" $ do
     it "successfully validates an SNS notification" $ do
       let message = "Some message"
