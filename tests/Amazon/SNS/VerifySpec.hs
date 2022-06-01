@@ -29,3 +29,26 @@ spec = beforeAll_ initCertServer $ afterAll_ killCertServer $ do
       x <- verifySNSMessage payload
 
       x `shouldBe` "Some message"
+
+    it "successfully validates an SNS notification" $ do
+      let
+        payload = [aesonQQ|
+          { Message: "Some message"
+          , MessageId: "78d4d7a0-a3eb-5c4d-834f-8d5fa9813ab6"
+          , Timestamp: "2022-05-18T14:52:26.952Z"
+          , Token: "test"
+          , TopicArn: "arn:aws:sns:us-west-2:123456789012:MyTopic"
+          , Type: "SubscriptionConfirmation"
+          , SignatureVersion: "1"
+          , SubscribeURL: "http://localhost:3000"
+
+          , Signature: "fHExOb2eyGY3mCISjk72nTLRomG9kB+I8c01Jj8iAEUWG2De3QrdRciMXrlP/zEJEbCVDN1lzO91rMu02ng0Akj1s3tN8lRK1QgCRt/35ob9QG9j2xXMowbdEmibj03rILQAriXk1H+pvftBvr9imz+eZID8TZfpjKkVJtn5pvs7LjpOQaTLgZmDIVtsz+04sTQscaETy00kLbqmfknqd6zGmvB7ub/HDhjF3xojBLE+1HCUCgQoS6FAEs/ivbcTdXpqs8L5trStC1So1w/xlTkaGnDmcLpVtj7qk2HBnggJhw4ay8dF4LRpipc5w254dghIeY0YlwflW4l1aZHb3w=="
+          , SigningCertURL: "http://localhost:3000"
+          }
+          |]
+
+      verifySNSMessage payload
+        `shouldThrow` (\case
+                        SubscribeMessageResponded -> True
+                        _ -> False
+                      )
