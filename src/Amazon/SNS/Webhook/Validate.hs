@@ -7,7 +7,7 @@
 {-# LANGUAGE RecordWildCards #-}
 
 module Amazon.SNS.Webhook.Validate
-  ( validateSnsMessage
+  ( verifySnsMessage
   , handleSubscription
   , SNSNotificationValidationError(..)
   , ValidSNSMessage(..)
@@ -49,11 +49,11 @@ data ValidSNSMessage
 --
 -- <https://docs.aws.amazon.com/sns/latest/dg/sns-verify-signature-of-message.html>
 --
-validateSnsMessage
+verifySnsMessage
   :: MonadIO m
   => SNSPayload
   -> m (Either SNSNotificationValidationError ValidSNSMessage)
-validateSnsMessage payload@SNSPayload {..} = runExceptT $ do
+verifySnsMessage payload@SNSPayload {..} = runExceptT $ do
   signature <- unTry BadSignature $ convertFromBase Base64 $ encodeUtf8
     snsSignature
   signedCert <- retrieveCertificate payload

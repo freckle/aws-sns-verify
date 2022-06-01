@@ -40,7 +40,7 @@ requireSNSMessage =
   unTry id
     <=< handleSubscription
     <=< unTry id
-    <=< validateSnsMessage
+    <=< verifySnsMessage
     <=< parseSNSPayload
 
 parseSNSPayload :: MonadIO m => Value -> m SNSPayload

@@ -12,10 +12,10 @@ import Test.Hspec
 
 spec :: Spec
 spec = do
-  describe "validateSnsMessage" $ do
+  describe "verifySnsMessage" $ do
     it "successfully validates an SNS notification" $ do
       let message = "Some message"
-      x <- validateSnsMessage $ SNSPayload
+      x <- verifySnsMessage $ SNSPayload
         { snsMessage = message
         , snsMessageId = "78d4d7a0-a3eb-5c4d-834f-8d5fa9813ab6"
         , snsTimestamp = "2022-05-18T14:52:26.952Z"
@@ -35,7 +35,7 @@ spec = do
 
     it "fails to validate a currupt SNS notification" $ do
       let
-        go = validateSnsMessage $ SNSPayload
+        go = verifySnsMessage $ SNSPayload
           { snsMessage = "Some message"
           , snsMessageId = "corrupt"
           , snsTimestamp = "2022-05-18T14:52:26.952Z"
@@ -55,7 +55,7 @@ spec = do
 
     it "fails to validate a bad PEM" $ do
       let
-        go = validateSnsMessage $ SNSPayload
+        go = verifySnsMessage $ SNSPayload
           { snsMessage = "Some message"
           , snsMessageId = "corrupt"
           , snsTimestamp = "2022-05-18T14:52:26.952Z"
@@ -83,7 +83,7 @@ spec = do
           , snsSubscribeURL =
             "https://sns.us-west-2.amazonaws.com/?Action=ConfirmSubscription&TopicArn=arn:aws:sns:us-west-2:123456789012:MyTopic&Token=2336412f37..."
           }
-      x <- validateSnsMessage $ SNSPayload
+      x <- verifySnsMessage $ SNSPayload
         { snsMessage = message
         , snsMessageId = "165545c9-2a5c-472c-8df2-7ff2be2b3b1b"
         , snsTimestamp = "2012-04-26T20:45:04.751Z"
@@ -107,7 +107,7 @@ spec = do
           , snsSubscribeURL =
             "https://sns.us-west-2.amazonaws.com/?Action=ConfirmSubscription&TopicArn=arn:aws:sns:us-west-2:123456789012:MyTopic&Token=2336412f37..."
           }
-      x <- validateSnsMessage $ SNSPayload
+      x <- verifySnsMessage $ SNSPayload
         { snsMessage = message
         , snsMessageId = "165545c9-2a5c-472c-8df2-7ff2be2b3b1b"
         , snsTimestamp = "2012-04-26T20:45:04.751Z"
