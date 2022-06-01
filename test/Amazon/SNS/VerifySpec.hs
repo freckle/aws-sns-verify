@@ -1,17 +1,17 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 
-module Amazon.SNS.WebhookSpec
+module Amazon.SNS.VerifySpec
   ( spec
   ) where
 
-import Amazon.SNS.Webhook
+import Amazon.SNS.Verify
 import Data.Aeson.QQ
 import Test.Hspec
 
 spec :: Spec
 spec = do
-  describe "requireSNSMessage" $ do
+  describe "verifySNSMessage" $ do
     it "successfully validates an SNS notification" $ do
       let
         payload = [aesonQQ|
@@ -26,6 +26,6 @@ spec = do
           , SigningCertURL: "https://gist.githubusercontent.com/eborden/c96c89259b6ad84bf8b6fdd325b6ee68/raw/494530cc0c8608171e7accb0a727a0b093d27a5e/cert.pem"
           }
           |]
-      x <- requireSNSMessage payload
+      x <- verifySNSMessage payload
 
       x `shouldBe` "Some message"

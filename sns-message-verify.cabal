@@ -4,11 +4,11 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 
-name:           sns-webhook
+name:           sns-message-verify
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/sns-webhook#readme>
-homepage:       https://github.com/freckle/sns-webhook#readme
-bug-reports:    https://github.com/freckle/sns-webhook/issues
+description:    Please see the README on GitHub at <https://github.com/githubuser/sns-message-verify#readme>
+homepage:       https://github.com/freckle/sns-message-verify#readme
+bug-reports:    https://github.com/freckle/sns-message-verify/issues
 author:         Freckle
 maintainer:     engineering@freckle.com
 copyright:      2022 Freckle By Renaissance
@@ -21,15 +21,15 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/freckle/sns-webhook
+  location: https://github.com/freckle/sns-message-verify
 
 library
   exposed-modules:
-      Amazon.SNS.Webhook
-      Amazon.SNS.Webhook.Payload
-      Amazon.SNS.Webhook.Validate
+      Amazon.SNS.Verify
+      Amazon.SNS.Verify.Payload
+      Amazon.SNS.Verify.Validate
   other-modules:
-      Amazon.SNS.Webhook.Prelude
+      Amazon.SNS.Verify.Prelude
   hs-source-dirs:
       src
   build-depends:
@@ -47,13 +47,13 @@ library
     , x509-validation
   default-language: Haskell2010
 
-test-suite sns-webhook-test
+test-suite sns-message-verify-test
   type: exitcode-stdio-1.0
   main-is: Main.hs
   other-modules:
-      Amazon.SNS.Webhook.ValidateSpec
-      Amazon.SNS.WebhookSpec
-      Paths_sns_webhook
+      Amazon.SNS.Verify.ValidateSpec
+      Amazon.SNS.VerifySpec
+      Paths_sns_message_verify
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
@@ -62,7 +62,7 @@ test-suite sns-webhook-test
     , aeson-qq
     , base >=4.7 && <5
     , hspec
-    , sns-webhook
+    , sns-message-verify
     , text
     , x509-validation
   default-language: Haskell2010

@@ -1,21 +1,21 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Amazon.SNS.Webhook.ValidateSpec
+module Amazon.SNS.Verify.ValidateSpec
   ( spec
   ) where
 
-import Amazon.SNS.Webhook.Payload
-import Amazon.SNS.Webhook.Validate
+import Amazon.SNS.Verify.Payload
+import Amazon.SNS.Verify.Validate
 import Data.Text (Text)
 import Data.X509.Validation (SignatureFailure(..))
 import Test.Hspec
 
 spec :: Spec
 spec = do
-  describe "verifySnsMessage" $ do
+  describe "validateSnsMessage" $ do
     it "successfully validates an SNS notification" $ do
       let message = "Some message"
-      x <- verifySnsMessage $ SNSPayload
+      x <- validateSnsMessage $ SNSPayload
         { snsMessage = message
         , snsMessageId = "78d4d7a0-a3eb-5c4d-834f-8d5fa9813ab6"
         , snsTimestamp = "2022-05-18T14:52:26.952Z"
@@ -35,7 +35,7 @@ spec = do
 
     it "fails to validate a currupt SNS notification" $ do
       let
-        go = verifySnsMessage $ SNSPayload
+        go = validateSnsMessage $ SNSPayload
           { snsMessage = "Some message"
           , snsMessageId = "corrupt"
           , snsTimestamp = "2022-05-18T14:52:26.952Z"
@@ -55,7 +55,7 @@ spec = do
 
     it "fails to validate a bad PEM" $ do
       let
-        go = verifySnsMessage $ SNSPayload
+        go = validateSnsMessage $ SNSPayload
           { snsMessage = "Some message"
           , snsMessageId = "corrupt"
           , snsTimestamp = "2022-05-18T14:52:26.952Z"
@@ -83,7 +83,7 @@ spec = do
           , snsSubscribeURL =
             "https://sns.us-west-2.amazonaws.com/?Action=ConfirmSubscription&TopicArn=arn:aws:sns:us-west-2:123456789012:MyTopic&Token=2336412f37..."
           }
-      x <- verifySnsMessage $ SNSPayload
+      x <- validateSnsMessage $ SNSPayload
         { snsMessage = message
         , snsMessageId = "165545c9-2a5c-472c-8df2-7ff2be2b3b1b"
         , snsTimestamp = "2012-04-26T20:45:04.751Z"
@@ -107,7 +107,7 @@ spec = do
           , snsSubscribeURL =
             "https://sns.us-west-2.amazonaws.com/?Action=ConfirmSubscription&TopicArn=arn:aws:sns:us-west-2:123456789012:MyTopic&Token=2336412f37..."
           }
-      x <- verifySnsMessage $ SNSPayload
+      x <- validateSnsMessage $ SNSPayload
         { snsMessage = message
         , snsMessageId = "165545c9-2a5c-472c-8df2-7ff2be2b3b1b"
         , snsTimestamp = "2012-04-26T20:45:04.751Z"

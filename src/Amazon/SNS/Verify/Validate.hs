@@ -6,17 +6,17 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE RecordWildCards #-}
 
-module Amazon.SNS.Webhook.Validate
-  ( verifySnsMessage
+module Amazon.SNS.Verify.Validate
+  ( validateSnsMessage
   , handleSubscription
   , SNSNotificationValidationError(..)
   , ValidSNSMessage(..)
   ) where
 
-import Amazon.SNS.Webhook.Prelude
+import Amazon.SNS.Verify.Prelude
 
-import Amazon.SNS.Webhook.Payload
-import Control.Error
+import Amazon.SNS.Verify.Payload
+import Control.Error (ExceptT, catMaybes, headMay, runExceptT, throwE)
 import Control.Monad (when)
 import Data.ByteArray.Encoding (Base(Base64), convertFromBase)
 import Data.PEM (pemContent, pemParseLBS)
@@ -49,11 +49,11 @@ data ValidSNSMessage
 --
 -- <https://docs.aws.amazon.com/sns/latest/dg/sns-verify-signature-of-message.html>
 --
-verifySnsMessage
+validateSnsMessage
   :: MonadIO m
   => SNSPayload
   -> m (Either SNSNotificationValidationError ValidSNSMessage)
-verifySnsMessage payload@SNSPayload {..} = runExceptT $ do
+validateSnsMessage payload@SNSPayload {..} = runExceptT $ do
   signature <- unTry BadSignature $ convertFromBase Base64 $ encodeUtf8
     snsSignature
   signedCert <- retrieveCertificate payload

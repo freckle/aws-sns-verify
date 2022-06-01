@@ -5,14 +5,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RankNTypes #-}
 
-module Amazon.SNS.Webhook.Payload
+module Amazon.SNS.Verify.Payload
   ( SNSPayload(..)
   , SNSType(..)
   , SNSNotification(..)
   , SNSSubscription(..)
   ) where
 
-import Amazon.SNS.Webhook.Prelude
+import Amazon.SNS.Verify.Prelude
 
 import Data.Aeson
   ( FromJSON

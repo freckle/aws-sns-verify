@@ -1,6 +1,6 @@
-name: sns-webhook
+name: sns-message-verify
 version: 0.1.0.0
-github: "freckle/sns-webhook"
+github: "freckle/sns-message-verify"
 license: BSD3
 author: "Freckle"
 maintainer: "engineering@freckle.com"
@@ -8,13 +8,13 @@ copyright: "2022 Freckle By Renaissance"
 extra-source-files:
   - README.md
   - ChangeLog.md
-description: Please see the README on GitHub at <https://github.com/githubuser/sns-webhook#readme>
+description: Please see the README on GitHub at <https://github.com/githubuser/sns-message-verify#readme>
 dependencies:
   - base >= 4.7 && < 5
 library:
   source-dirs: src
   other-modules:
-    - Amazon.SNS.Webhook.Prelude
+    - Amazon.SNS.Verify.Prelude
   dependencies:
     - aeson
     - bytestring
@@ -28,7 +28,7 @@ library:
     - x509-validation
     - http-types
 tests:
-  sns-webhook-test:
+  sns-message-verify-test:
     main: Main.hs
     source-dirs: test
     ghc-options:
@@ -36,7 +36,7 @@ tests:
       - -rtsopts
       - -with-rtsopts=-N
     dependencies:
-      - sns-webhook
+      - sns-message-verify
       - hspec
       - text
       - aeson-qq
