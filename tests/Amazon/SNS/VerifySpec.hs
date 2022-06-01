@@ -30,7 +30,7 @@ spec = beforeAll_ initCertServer $ afterAll_ killCertServer $ do
 
       x `shouldBe` "Some message"
 
-    it "successfully validates an SNS notification" $ do
+    it "successfully confirms a subscription" $ do
       let
         payload = [aesonQQ|
           { Message: "Some message"
