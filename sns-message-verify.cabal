@@ -80,6 +80,7 @@ test-suite sns-message-verify-test
   type: exitcode-stdio-1.0
   main-is: Main.hs
   other-modules:
+      Amazon.SNS.Verify.TestPrelude
       Amazon.SNS.Verify.ValidateSpec
       Amazon.SNS.VerifySpec
       Paths_sns_message_verify
@@ -113,10 +114,15 @@ test-suite sns-message-verify-test
   ghc-options: -Weverything -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missing-local-signatures -Wno-monomorphism-restriction -Wno-unsafe -Wno-safe -Wno-all-missed-specialisations -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson-qq
+    , async
     , base >=4.7 && <5
     , hspec
+    , http-conduit
+    , http-types
     , sns-message-verify
     , text
+    , wai
+    , warp
     , x509-validation
   if impl(ghc >= 8.10)
     ghc-options: -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module

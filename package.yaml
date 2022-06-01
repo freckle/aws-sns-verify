@@ -84,8 +84,13 @@ tests:
       - -rtsopts
       - -with-rtsopts=-N
     dependencies:
-      - sns-message-verify
-      - hspec
-      - text
       - aeson-qq
+      - async
+      - hspec
+      - http-conduit
+      - http-types
+      - sns-message-verify
+      - text
+      - wai
+      - warp
       - x509-validation

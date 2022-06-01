@@ -2,16 +2,14 @@ module Amazon.SNS.Verify.ValidateSpec
   ( spec
   ) where
 
-import Prelude
+import Amazon.SNS.Verify.TestPrelude
 
 import Amazon.SNS.Verify.Payload
 import Amazon.SNS.Verify.Validate
-import Data.Text (Text)
 import Data.X509.Validation (SignatureFailure(..))
-import Test.Hspec
 
 spec :: Spec
-spec = do
+spec = beforeAll_ server $ afterAll_ killServer $ do
   describe "validateSnsMessage" $ do
     it "successfully validates an SNS notification" $ do
       let message = "Some message"
@@ -122,5 +120,4 @@ spec = do
       x `shouldBe` Right (SNSUnsubscribe subscription)
 
 cert :: Text
-cert =
-  "https://gist.githubusercontent.com/eborden/c96c89259b6ad84bf8b6fdd325b6ee68/raw/494530cc0c8608171e7accb0a727a0b093d27a5e/cert.pem"
+cert = "http://localhost:3000"
