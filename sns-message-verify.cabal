@@ -1,0 +1,133 @@
+cabal-version: 1.18
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           sns-message-verify
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/sns-message-verify#readme>
+homepage:       https://github.com/freckle/sns-message-verify#readme
+bug-reports:    https://github.com/freckle/sns-message-verify/issues
+author:         Freckle
+maintainer:     engineering@freckle.com
+copyright:      2022 Freckle By Renaissance
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    tests/cert.pem
+    tests/key.pem
+extra-doc-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/freckle/sns-message-verify
+
+library
+  exposed-modules:
+      Amazon.SNS.Verify
+      Amazon.SNS.Verify.Payload
+      Amazon.SNS.Verify.Validate
+  other-modules:
+      Amazon.SNS.Verify.Prelude
+  hs-source-dirs:
+      library
+  default-extensions:
+      BangPatterns
+      DataKinds
+      DeriveAnyClass
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveLift
+      DeriveTraversable
+      DerivingStrategies
+      FlexibleContexts
+      FlexibleInstances
+      GADTs
+      GeneralizedNewtypeDeriving
+      LambdaCase
+      MultiParamTypeClasses
+      NoImplicitPrelude
+      NoMonomorphismRestriction
+      OverloadedStrings
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      TypeApplications
+      TypeFamilies
+  ghc-options: -Weverything -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missing-local-signatures -Wno-monomorphism-restriction -Wno-unsafe -Wno-safe -Wno-all-missed-specialisations
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , errors
+    , http-conduit
+    , memory
+    , pem
+    , text
+    , x509
+    , x509-validation
+  if impl(ghc >= 8.10)
+    ghc-options: -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module
+  if impl(ghc >= 9.2.2)
+    ghc-options: -Wno-missing-kind-signatures
+  default-language: Haskell2010
+
+test-suite sns-message-verify-test
+  type: exitcode-stdio-1.0
+  main-is: Main.hs
+  other-modules:
+      Amazon.SNS.Verify.TestPrelude
+      Amazon.SNS.Verify.ValidateSpec
+      Amazon.SNS.VerifySpec
+      Paths_sns_message_verify
+  hs-source-dirs:
+      tests
+  default-extensions:
+      BangPatterns
+      DataKinds
+      DeriveAnyClass
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveLift
+      DeriveTraversable
+      DerivingStrategies
+      FlexibleContexts
+      FlexibleInstances
+      GADTs
+      GeneralizedNewtypeDeriving
+      LambdaCase
+      MultiParamTypeClasses
+      NoImplicitPrelude
+      NoMonomorphismRestriction
+      OverloadedStrings
+      RankNTypes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      TypeApplications
+      TypeFamilies
+  ghc-options: -Weverything -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missing-local-signatures -Wno-monomorphism-restriction -Wno-unsafe -Wno-safe -Wno-all-missed-specialisations -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson-qq
+    , async
+    , base >=4.7 && <5
+    , hspec
+    , http-conduit
+    , http-types
+    , sns-message-verify
+    , text
+    , wai
+    , warp
+    , x509-validation
+  if impl(ghc >= 8.10)
+    ghc-options: -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module
+  if impl(ghc >= 9.2.2)
+    ghc-options: -Wno-missing-kind-signatures
+  default-language: Haskell2010

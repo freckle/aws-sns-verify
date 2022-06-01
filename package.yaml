@@ -1,0 +1,99 @@
+name: sns-message-verify
+version: 0.1.0.0
+github: "freckle/sns-message-verify"
+license: BSD3
+author: "Freckle"
+maintainer: "engineering@freckle.com"
+copyright: "2022 Freckle By Renaissance"
+description: Please see the README on GitHub at <https://github.com/githubuser/sns-message-verify#readme>
+
+extra-doc-files:
+  - README.md
+  - CHANGELOG.md
+
+extra-source-files:
+  - tests/cert.pem
+  - tests/key.pem
+
+ghc-options:
+  - -Weverything
+  - -Wno-missing-exported-signatures # re-enables missing-signatures
+  - -Wno-missing-import-lists
+  - -Wno-missing-local-signatures
+  - -Wno-monomorphism-restriction
+  - -Wno-unsafe
+  - -Wno-safe
+  - -Wno-all-missed-specialisations
+
+when:
+  - condition: "impl(ghc >= 8.10)"
+    ghc-options:
+      - -Wno-missing-safe-haskell-mode
+      - -Wno-prepositive-qualified-module
+  - condition: "impl(ghc >= 9.2.2)"
+    ghc-options:
+      - -Wno-missing-kind-signatures
+
+dependencies:
+  - base >= 4.7 && < 5
+
+default-extensions:
+  - BangPatterns
+  - DataKinds
+  - DeriveAnyClass
+  - DeriveFoldable
+  - DeriveFunctor
+  - DeriveGeneric
+  - DeriveLift
+  - DeriveTraversable
+  - DerivingStrategies
+  - FlexibleContexts
+  - FlexibleInstances
+  - GADTs
+  - GeneralizedNewtypeDeriving
+  - LambdaCase
+  - MultiParamTypeClasses
+  - NoImplicitPrelude
+  - NoMonomorphismRestriction
+  - OverloadedStrings
+  - RankNTypes
+  - RecordWildCards
+  - ScopedTypeVariables
+  - StandaloneDeriving
+  - TypeApplications
+  - TypeFamilies
+
+library:
+  source-dirs: library
+  other-modules:
+    - Amazon.SNS.Verify.Prelude
+  dependencies:
+    - aeson
+    - bytestring
+    - errors
+    - http-conduit
+    - memory
+    - pem
+    - text
+    - x509
+    - x509-validation
+
+tests:
+  sns-message-verify-test:
+    main: Main.hs
+    source-dirs: tests
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - aeson-qq
+      - async
+      - hspec
+      - http-conduit
+      - http-types
+      - sns-message-verify
+      - text
+      - wai
+      - warp
+      - x509-validation
