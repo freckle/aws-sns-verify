@@ -20,37 +20,6 @@ steps:
   - trailing_whitespace: {}
 columns: 80
 newline: native
-
-# N.B. Inferring extensions from the cabal file doesn't work because we're a
-# multi-package repository. Apparently, you have to run stylish-haskell in the
-# directory containing the cabal file for this to work. We typically run it from
-# megarepo/ or megarepo/backend. Instead, we must duplicate the extensions of
-# our packages.
-#
-# cabal: true
-language_extensions:
-  - BangPatterns
-  - DataKinds
-  - DeriveAnyClass
-  - DeriveFoldable
-  - DeriveFunctor
-  - DeriveGeneric
-  - DeriveLift
-  - DeriveTraversable
-  - DerivingStrategies
-  - FlexibleContexts
-  - FlexibleInstances
-  - GADTs
-  - GeneralizedNewtypeDeriving
-  - LambdaCase
-  - MultiParamTypeClasses
-  - NoImplicitPrelude
-  - NoMonomorphismRestriction
-  - OverloadedStrings
-  - QuasiQuotes
-  - RankNTypes
-  - RecordWildCards
-  - ScopedTypeVariables
-  - StandaloneDeriving
-  - TypeApplications
-  - TypeFamilies
+# For multi-package repositories this default-extensions must be set manually.
+# For single package repos it can be inferred from the cabal file.
+cabal: true

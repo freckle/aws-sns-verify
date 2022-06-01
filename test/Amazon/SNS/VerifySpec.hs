@@ -1,9 +1,10 @@
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 
 module Amazon.SNS.VerifySpec
   ( spec
   ) where
+
+import Prelude
 
 import Amazon.SNS.Verify
 import Data.Aeson.QQ

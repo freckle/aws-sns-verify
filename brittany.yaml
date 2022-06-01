@@ -32,7 +32,6 @@ conf_forward:
     - -XNoImplicitPrelude
     - -XNoMonomorphismRestriction
     - -XOverloadedStrings
-    - -XQuasiQuotes
     - -XRankNTypes
     - -XRecordWildCards
     - -XScopedTypeVariables

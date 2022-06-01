@@ -1,7 +1,3 @@
-{-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE NoImplicitPrelude #-}
-
 module Amazon.SNS.Verify
   ( verifySNSMessage
   , verifySNSMessageEither

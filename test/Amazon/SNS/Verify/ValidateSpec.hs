@@ -1,8 +1,8 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module Amazon.SNS.Verify.ValidateSpec
   ( spec
   ) where
+
+import Prelude
 
 import Amazon.SNS.Verify.Payload
 import Amazon.SNS.Verify.Validate
