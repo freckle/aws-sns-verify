@@ -30,6 +30,9 @@ when:
     ghc-options:
       - -Wno-missing-safe-haskell-mode
       - -Wno-prepositive-qualified-module
+  - condition: "impl(ghc >= 9.2.2)"
+    ghc-options:
+      - -Wno-missing-kind-signatures
 
 dependencies:
   - base >= 4.7 && < 5
