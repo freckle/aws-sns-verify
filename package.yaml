@@ -11,6 +11,10 @@ extra-doc-files:
   - README.md
   - CHANGELOG.md
 
+extra-source-files:
+  - tests/cert.pem
+  - tests/key.pem
+
 dependencies:
   - base >= 4.7 && < 5
 

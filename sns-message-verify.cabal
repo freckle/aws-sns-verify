@@ -15,6 +15,9 @@ copyright:      2022 Freckle By Renaissance
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
+extra-source-files:
+    tests/cert.pem
+    tests/key.pem
 extra-doc-files:
     README.md
     CHANGELOG.md
