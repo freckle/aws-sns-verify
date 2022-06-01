@@ -10,7 +10,7 @@ import Amazon.SNS.Verify
 import Data.Aeson.QQ
 
 spec :: Spec
-spec = beforeAll_ server $ afterAll_ killServer $ do
+spec = beforeAll_ initCertServer $ afterAll_ killCertServer $ do
   describe "verifySNSMessage" $ do
     it "successfully validates an SNS notification" $ do
       let

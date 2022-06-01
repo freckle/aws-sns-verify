@@ -15,8 +15,8 @@ import Network.Wai
 import Network.Wai.Handler.Warp
 import Test.Hspec as X
 
-server :: IO ()
-server = do
+initCertServer :: IO ()
+initCertServer = do
   toDie <- newEmptyMVar
   void $ async $ race_ (takeMVar toDie) $ run 3000 $ \req send ->
     if requestMethod req == "DELETE"
@@ -28,6 +28,6 @@ server = do
           "./tests/cert.pem"
           Nothing
 
-killServer :: IO ()
-killServer = do
+killCertServer :: IO ()
+killCertServer = do
   void $ httpLbs $ parseRequest_ "DELETE http://localhost:3000"
