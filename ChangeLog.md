@@ -1,3 +1,3 @@
-# Changelog for sns-webhook
+# Changelog for sns-message-verify
 
 ## Unreleased changes
