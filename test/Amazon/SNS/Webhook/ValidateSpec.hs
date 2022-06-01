@@ -120,7 +120,6 @@ spec = do
         }
       x `shouldBe` SNSUnsubscribe subscription
 
-
 cert :: Text
 cert =
   "https://gist.githubusercontent.com/eborden/c96c89259b6ad84bf8b6fdd325b6ee68/raw/494530cc0c8608171e7accb0a727a0b093d27a5e/cert.pem"
