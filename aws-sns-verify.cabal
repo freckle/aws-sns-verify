@@ -5,8 +5,9 @@ cabal-version: 1.18
 -- see: https://github.com/sol/hpack
 
 name:           aws-sns-verify
-version:        0.1.0.0
+version:        0.0.0.0
 description:    Please see the README on GitHub at <https://github.com/freckle/aws-sns-verify#readme>
+category:       Network, Web, AWS, Amazon, Cloud, Cryptography, Distributed-Computing
 homepage:       https://github.com/freckle/aws-sns-verify#readme
 bug-reports:    https://github.com/freckle/aws-sns-verify/issues
 author:         Freckle

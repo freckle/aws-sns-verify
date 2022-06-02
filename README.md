@@ -1,5 +1,13 @@
 # aws-sns-verify
 
+Consumers utilizing SNS need to do 3 tasks:
+
+1. Parse the message JSON
+2. Validate signed signatures
+3. Handle subscriptions
+
+This library encapsulates those actions.
+
 ```hs
 myEchoWebhook :: MonadHandler m => m ()
 myEchoWebhook = do
