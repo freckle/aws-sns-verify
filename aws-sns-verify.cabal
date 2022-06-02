@@ -13,7 +13,7 @@ bug-reports:    https://github.com/freckle/aws-sns-verify/issues
 author:         Freckle
 maintainer:     engineering@freckle.com
 copyright:      2022 Freckle By Renaissance
-license:        BSD3
+license:        MIT
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
