@@ -15,12 +15,15 @@ import Test.Hspec as X
 
 useCertServer :: IO () -> IO ()
 useCertServer action = do
-  ready <- newEmptyMVar
-  race_ (withMVar ready $ \() -> action)
-    $ runSettings
-        (setBeforeMainLoop (putMVar ready ()) . setPort 3000 $ defaultSettings)
+  (setReady, whenReady) <- initReadyState
+  race_ (whenReady action)
+    $ runSettings (setBeforeMainLoop setReady . setPort 3000 $ defaultSettings)
     $ \_req send -> send $ responseFile
         ok200
         [("Content-Type", "text/plain")]
         "./tests/cert.pem"
         Nothing
+ where
+  initReadyState = do
+    ready <- newEmptyMVar
+    return (putMVar ready (), withMVar ready . const)
