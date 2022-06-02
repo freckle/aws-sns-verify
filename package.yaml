@@ -1,11 +1,11 @@
-name: sns-message-verify
+name: aws-sns-verify
 version: 0.1.0.0
-github: "freckle/sns-message-verify"
+github: "freckle/aws-sns-verify"
 license: BSD3
 author: "Freckle"
 maintainer: "engineering@freckle.com"
 copyright: "2022 Freckle By Renaissance"
-description: Please see the README on GitHub at <https://github.com/githubuser/sns-message-verify#readme>
+description: Please see the README on GitHub at <https://github.com/githubuser/aws-sns-verify#readme>
 
 extra-doc-files:
   - README.md
@@ -79,7 +79,7 @@ library:
     - x509-validation
 
 tests:
-  sns-message-verify-test:
+  aws-sns-verify-test:
     main: Main.hs
     source-dirs: tests
     ghc-options:
@@ -91,7 +91,7 @@ tests:
       - async
       - hspec
       - http-types
-      - sns-message-verify
+      - aws-sns-verify
       - text
       - wai
       - warp

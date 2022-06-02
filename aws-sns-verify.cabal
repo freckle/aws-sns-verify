@@ -4,11 +4,11 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 
-name:           sns-message-verify
+name:           aws-sns-verify
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/sns-message-verify#readme>
-homepage:       https://github.com/freckle/sns-message-verify#readme
-bug-reports:    https://github.com/freckle/sns-message-verify/issues
+description:    Please see the README on GitHub at <https://github.com/githubuser/aws-sns-verify#readme>
+homepage:       https://github.com/freckle/aws-sns-verify#readme
+bug-reports:    https://github.com/freckle/aws-sns-verify/issues
 author:         Freckle
 maintainer:     engineering@freckle.com
 copyright:      2022 Freckle By Renaissance
@@ -24,7 +24,7 @@ extra-doc-files:
 
 source-repository head
   type: git
-  location: https://github.com/freckle/sns-message-verify
+  location: https://github.com/freckle/aws-sns-verify
 
 library
   exposed-modules:
@@ -78,14 +78,14 @@ library
     ghc-options: -Wno-missing-kind-signatures
   default-language: Haskell2010
 
-test-suite sns-message-verify-test
+test-suite aws-sns-verify-test
   type: exitcode-stdio-1.0
   main-is: Main.hs
   other-modules:
       Amazon.SNS.Verify.TestPrelude
       Amazon.SNS.Verify.ValidateSpec
       Amazon.SNS.VerifySpec
-      Paths_sns_message_verify
+      Paths_aws_sns_verify
   hs-source-dirs:
       tests
   default-extensions:
@@ -117,10 +117,10 @@ test-suite sns-message-verify-test
   build-depends:
       aeson-qq
     , async
+    , aws-sns-verify
     , base >=4.7 && <5
     , hspec
     , http-types
-    , sns-message-verify
     , text
     , wai
     , warp

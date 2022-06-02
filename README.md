@@ -1,4 +1,4 @@
-# sns-message-verify
+# aws-sns-verify
 
 ```hs
 myEchoWebhook :: MonadHandler m => m ()
