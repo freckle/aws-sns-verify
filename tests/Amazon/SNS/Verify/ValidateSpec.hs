@@ -89,7 +89,7 @@ spec = around_ useCertServer $ do
         , snsType = "SubscriptionConfirmation"
         , snsSignatureVersion = "1"
         , snsSignature =
-          "ZsPD3cDAHPU0mseSCKSQX8Ka2vT8lmaTHN6GbfCwmtfGFblWveBDUMWbSvhvDL4A6RujW8UfEpCytC2vwbMM2GUreTRpelK06t19nxeTHAnC5+JYBUpmlgauT92g3sLGYDWIUxAbD5u7ZY5QDfWaOpo8OD+xFy0sAB51SSDjTsXbt+gh/S6FbZQ1l/sjyBlDeJwxM/qpLn4xfQKO/Ev6lpV3ioBT8/Q7f1o4rzloYXxu1QnpDUx6L5uZB23lGEI4dcjIixi58WFwkz0SHgR9MWYIKJa2vZO2P8jFG63FGOhNaHbp3e/J6Tl6XnJnc+vriGle2dwhQjuWMDSdi92+kg=="
+          "Jec/VlsopbiA2fCckj/IwTPjDbSuFkl2hNKL898sQuZcMeKeOLthYs7YlF+xLi+Ip6rG/X08GZKtCqpoiSgKW8D9PI6eHVM2JQa76sFJO5ZdPylrDH+URwBf28gT+1l/VYk4p3VK8RZo+3Wkn87HXwxTq1YoN390o5ncT34zaBDtLx2cUA8+JOnYjItmYjVXDhrEBF6xad/vIY8V2o5xyQOfEWLm71/Tcs3radzNoSj2xlLQyJKPOzV661fG6Xz1vVKfDVC03+Q4Pn67SmU1wWRRT1nDwPPzQlcDAiAGRjB1U/C5iHfLQFF3dKo4azylkrM2ReTCMm9KMyIWqjq5eg=="
         , snsSigningCertURL = cert
         , snsTypePayload = SubscriptionConfirmation subscription
         }
@@ -113,7 +113,7 @@ spec = around_ useCertServer $ do
         , snsType = "UnsubscribeConfirmation"
         , snsSignatureVersion = "1"
         , snsSignature =
-          "DqsnMTKKAW65yGEjqGGmHzw660tq9lB0yK3GVznVCINDnzrrq+mvScrHSJQ17+tT+u1aSL8nFvyzC4xdn4j3b1TNSXJdqj1ivvMVpVDbvl8Wvf/+JQ/ac6MPdQMkq0RitX5pzod3bIekY9ZXejLoEP73Q5zcLbTGRnC7G4li5W5ZG9i81zfbM1PgqmkUQnPC49Cqm/KMvBok8PfVBzWfEFLcnSsbm7JJf6y5Y7j+onDLTlbjwdRhej+MUJrrtsXbkARUg6EZAFcbhULj/3EYhvwdDClL4h0OxxhwWRnofTONIZhLB7bAkrbgsikkyhZ49zG8PjD6+TLX3YPaNB5eFw=="
+          "fKtmZTE6xvGhbcCTchFPLmuhdoXI7hxWrE9qe1RjeLDecMaZGmqsn4rOrFDsteqot4ItLuJqvV7RtImGXrMa/JNnZdP71lG6FdrKTiGqZNrnxZZYbIuZMAsSQM4E8VaRwbxLXuPQY9IYFP4y9GfsdpDYx0tpbXOxGz/JFVQjTFpHY55BmV6Ec73g0X/eLSEdKfHtWg/gVf6W27ewa40jXvaa78VmcVXbPXIKwzGgSSSe9t6xxVe0kLjKXaDyJTl3rbZJZJgBLInbychWNq1vGHGZQhtCyxjKRfKIWNWDbHdM/fUBGUhuv089CblWpq8g/21HiJ9n+S3VSn0hCXB5hg=="
         , snsSigningCertURL = cert
         , snsTypePayload = UnsubscribeConfirmation subscription
         }

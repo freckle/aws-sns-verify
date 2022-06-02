@@ -80,7 +80,7 @@ unsignedSignature SNSPayload {..} =
     , Just snsMessage
     , Just "MessageId"
     , Just snsMessageId
-    , "SubscrieURL" <$ mSubscribeUrl
+    , "SubscribeURL" <$ mSubscribeUrl
     , mSubscribeUrl
     , "Subject" <$ mSubject
     , mSubject

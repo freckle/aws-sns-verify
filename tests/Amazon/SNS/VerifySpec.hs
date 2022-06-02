@@ -42,7 +42,7 @@ spec = around_ useCertServer $ do
           , SignatureVersion: "1"
           , SubscribeURL: "http://localhost:3000"
 
-          , Signature: "fHExOb2eyGY3mCISjk72nTLRomG9kB+I8c01Jj8iAEUWG2De3QrdRciMXrlP/zEJEbCVDN1lzO91rMu02ng0Akj1s3tN8lRK1QgCRt/35ob9QG9j2xXMowbdEmibj03rILQAriXk1H+pvftBvr9imz+eZID8TZfpjKkVJtn5pvs7LjpOQaTLgZmDIVtsz+04sTQscaETy00kLbqmfknqd6zGmvB7ub/HDhjF3xojBLE+1HCUCgQoS6FAEs/ivbcTdXpqs8L5trStC1So1w/xlTkaGnDmcLpVtj7qk2HBnggJhw4ay8dF4LRpipc5w254dghIeY0YlwflW4l1aZHb3w=="
+          , Signature: "qTSmo1uWEdGbXRUizLdSHA9AejQjOKKUBpqKc7tNdCNRHbFzlLE4ILq7rSY6HnepRWh6KMMjxXTEYz0hgKqb7XRz5xPZQW35MaMdg3pOy1J3ZH3o0pdareaCIwBIMKRX4Fg0+MTgg9aYrM/j6Rt9pjLpdl6rYaYLF/hv0uTnMJ7SbhrFz3nJGzpHI9p2qGfp9G+Fd5UG6aXUiok34LjlE1Kq8LLJSglV9+hW2ZKSkYwVVrqixlaZamHyjGXrtCqPO+TKWjxp0G8SCf0zHe+CNTq0D4ZeDNKixh1GHXh23kc85gnH8YnfsBeuHudXK8Fhum9v/9Rr5YGLQNf5+3qmtA=="
           , SigningCertURL: "http://localhost:3000"
           }
           |]
