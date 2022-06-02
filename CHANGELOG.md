@@ -1,6 +1,6 @@
 ## [_Unreleased_](https://github.com/freckle/aws-sns-verify/compare/v0.0.0.0...main)
 
-## [v0.0.0.0](https://github.com/freckle/aws-sns-verify/v0.0.0.0)
+## [v0.0.0.0](https://github.com/freckle/aws-sns-verify/releases/tag/v0.0.0.0)
 
 - Initial release.
 - Handle JSON parsing.
