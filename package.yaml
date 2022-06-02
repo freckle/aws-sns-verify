@@ -5,7 +5,7 @@ license: BSD3
 author: "Freckle"
 maintainer: "engineering@freckle.com"
 copyright: "2022 Freckle By Renaissance"
-description: Please see the README on GitHub at <https://github.com/githubuser/aws-sns-verify#readme>
+description: Please see the README on GitHub at <https://github.com/freckle/aws-sns-verify#readme>
 
 extra-doc-files:
   - README.md
