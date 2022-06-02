@@ -19,12 +19,8 @@ useCertServer action = do
   race_ (withMVar ready $ \() -> action)
     $ runSettings
         (setBeforeMainLoop (putMVar ready ()) . setPort 3000 $ defaultSettings)
-    $ \req send -> do
-        if requestMethod req == "DELETE"
-          then send (responseLBS status200 [] "Goodbye!")
-          else do
-            send $ responseFile
-              ok200
-              [("Content-Type", "text/plain")]
-              "./tests/cert.pem"
-              Nothing
+    $ \_req send -> send $ responseFile
+        ok200
+        [("Content-Type", "text/plain")]
+        "./tests/cert.pem"
+        Nothing
