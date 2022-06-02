@@ -1,0 +1,8 @@
+## [_Unreleased_](https://github.com/freckle/aws-sns-verify/compare/v0.0.0.0...main)
+
+## [v0.0.0.0](https://github.com/freckle/aws-sns-verify/v0.0.0.0)
+
+- Initial release.
+- Handle JSON parsing.
+- Handle validation of payload signatures via X509.
+- Handle response to subscription messages.
