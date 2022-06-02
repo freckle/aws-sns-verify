@@ -5,6 +5,7 @@ license: MIT
 author: "Freckle"
 maintainer: "engineering@freckle.com"
 copyright: "2022 Freckle By Renaissance"
+synopsis: Parse and verify AWS SNS messages
 description: Please see the README on GitHub at <https://github.com/freckle/aws-sns-verify#readme>
 category: Network, Web, AWS, Amazon, Cloud, Cryptography, Distributed-Computing
 

@@ -6,6 +6,7 @@ cabal-version: 1.18
 
 name:           aws-sns-verify
 version:        0.0.0.0
+synopsis:       Parse and verify AWS SNS messages
 description:    Please see the README on GitHub at <https://github.com/freckle/aws-sns-verify#readme>
 category:       Network, Web, AWS, Amazon, Cloud, Cryptography, Distributed-Computing
 homepage:       https://github.com/freckle/aws-sns-verify#readme
