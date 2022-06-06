@@ -62,7 +62,7 @@ spec = around_ useCertServer $ do
           , snsSignatureVersion = "1"
           , snsSignature =
             "Dg24trcOUiLjclt5JwyJS0JEOnEEbi6P30XS6KBxMCwzZ08a04UwjaFTW9Ae8xurhBS5YESz1fY28vTwvEmxh/20WmB3bWIDOMp9v5RI8XSZOvpMm+hdQJ43VqGhEDyAvRU6iCDLihDlZNc/sBCwl9X0H4kh/8vIElRif9gFBbYI94ZHGgqEV+Zc3gVKo9Udrl/MxNvMVadsO/+/oPVUeWibQr3xfGK95oc/ocuNAgi0MOxZmLVnibHu36KOTSvy2qSLonnRRFcbaauYZJ4js7oTq+1ujXNO72oPLaeG3pVJ2grqMc5z8tKQxFnSTE3es7wQarU/CLrbO8j0isbnWw=="
-          , snsSigningCertURL = "http://localhost:4000/404.pem"
+          , snsSigningCertURL = "http://localhost:3000/404"
           , snsTypePayload = Notification $ SNSNotification
             { snsSubject =
               Just

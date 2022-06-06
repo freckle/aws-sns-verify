@@ -18,11 +18,9 @@ useCertServer action = do
   (setReady, whenReady) <- initReadyState
   race_ (whenReady action)
     $ runSettings (setBeforeMainLoop setReady . setPort 3000 $ defaultSettings)
-    $ \_req send -> send $ responseFile
-        ok200
-        [("Content-Type", "text/plain")]
-        "./tests/cert.pem"
-        Nothing
+    $ \req send -> if rawPathInfo req == "/404"
+        then send $ responseLBS notFound404 [] ""
+        else send $ responseFile ok200 [] "./tests/cert.pem" Nothing
  where
   initReadyState = do
     ready <- newEmptyMVar
