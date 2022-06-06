@@ -22,7 +22,7 @@ import Data.Text.Encoding (encodeUtf8)
 -- The same as 'verifySNSMessage', but decodes the message as `JSON`.
 --
 verifySNSMessageJSON :: (FromJSON a, MonadIO m) => Value -> m a
-verifySNSMessageJSON = unTry id <=< verifySNSMessageJSONEither
+verifySNSMessageJSON = unTryIO id <=< verifySNSMessageJSONEither
 
 verifySNSMessageJSONEither
   :: (FromJSON a, MonadIO m)
@@ -47,7 +47,7 @@ verifySNSMessageJSONEither value =
 -- 3. And in the case of subscription events responded to.
 --
 verifySNSMessage :: MonadIO m => Value -> m Text
-verifySNSMessage = unTry id <=< verifySNSMessageEither
+verifySNSMessage = unTryIO id <=< verifySNSMessageEither
 
 verifySNSMessageEither
   :: MonadIO m => Value -> m (Either SNSNotificationValidationError Text)
