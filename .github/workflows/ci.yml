@@ -28,6 +28,7 @@ jobs:
       - uses: freckle/stack-action@v3
         with:
           stack-yaml: ${{ matrix.stack-yaml }}
+          stack-arguments: --flag aws-sns-verify:development
 
   lint:
     runs-on: ubuntu-latest
