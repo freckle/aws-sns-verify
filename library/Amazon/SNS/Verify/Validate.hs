@@ -46,7 +46,7 @@ validateSnsMessage
   => SNSPayload
   -> m (Either SNSNotificationValidationError ValidSNSMessage)
 validateSnsMessage payload@SNSPayload {..} = runExceptT $ do
-  signature <- unTry BadSignature $ convertFromBase Base64 $ encodeUtf8
+  signature <- unTryE BadSignature $ convertFromBase Base64 $ encodeUtf8
     snsSignature
   signedCert <- retrieveCertificate payload
   let
