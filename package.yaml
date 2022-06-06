@@ -65,6 +65,13 @@ default-extensions:
   - TypeApplications
   - TypeFamilies
 
+flags:
+  development:
+    description: Configure of testing
+    manual: true
+    default: false
+
+
 library:
   source-dirs: library
   other-modules:
@@ -75,10 +82,18 @@ library:
     - errors
     - http-conduit
     - memory
+    - network-uri
     - pem
+    - regex-tdfa
     - text
     - x509
     - x509-validation
+  when:
+    - condition: 'flag(development)'
+      then:
+        ghc-options: '-DDEVELOPMENT'
+      else:
+        ghc-options: ''
 
 tests:
   aws-sns-verify-test:
@@ -94,6 +109,7 @@ tests:
       - hspec
       - http-types
       - aws-sns-verify
+      - regex-tdfa
       - text
       - wai
       - warp
