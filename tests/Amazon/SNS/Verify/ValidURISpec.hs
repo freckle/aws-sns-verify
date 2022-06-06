@@ -13,7 +13,10 @@ spec :: Spec
 spec = around_ useCertServer $ do
   describe "verifySNSMessage" $ do
     it "validates a prod schema" $ do
-      "sns.us-east-2.amazonaws.com" =~ prodRegPattern `shouldBe` True
+      "sns.us-east-2.amazonaws.com" `shouldSatisfy` (=~ prodRegPattern)
 
     it "validates a prod schema" $ do
-      "sns.us-west-1b.amazonaws.com" =~ prodRegPattern `shouldBe` True
+      "sns.us-west-1b.amazonaws.com" `shouldSatisfy` (=~ prodRegPattern)
+
+    it "validates a prod schema" $ do
+      "www.google.com" `shouldNotSatisfy` (=~ prodRegPattern)
