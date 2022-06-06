@@ -12,16 +12,16 @@ import Amazon.SNS.Verify.Prelude
 validScheme :: String
 validScheme =
 #ifdef DEVELOPMENT
-  _devSchema
+  _devScheme
 #else
-  _prodSchema
+  _prodScheme
 #endif
 
-_devSchema :: String
-_devSchema = "http:"
+_devScheme :: String
+_devScheme = "http:"
 
-_prodSchema :: String
-_prodSchema = "https:"
+_prodScheme :: String
+_prodScheme = "https:"
 
 validRegPattern :: String
 validRegPattern =

@@ -71,7 +71,6 @@ flags:
     manual: true
     default: false
 
-
 library:
   source-dirs: library
   other-modules:
