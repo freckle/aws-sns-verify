@@ -89,10 +89,8 @@ library:
     - x509-validation
   when:
     - condition: "flag(development)"
-      then:
-        ghc-options: "-DDEVELOPMENT"
-      else:
-        ghc-options: ""
+      ghc-options:
+        -DDEVELOPMENT
 
 tests:
   aws-sns-verify-test:
