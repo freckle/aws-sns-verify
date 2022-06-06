@@ -8,6 +8,7 @@ module Amazon.SNS.Verify.Validate
 import Amazon.SNS.Verify.Prelude
 
 import Amazon.SNS.Verify.Payload
+import Amazon.SNS.Verify.ValidURI (validRegPattern, validScheme)
 import Control.Error (ExceptT, catMaybes, headMay, runExceptT, throwE)
 import Control.Monad (when)
 import Data.ByteArray.Encoding (Base(Base64), convertFromBase)
@@ -27,6 +28,8 @@ import Data.X509.Validation
   (SignatureFailure, SignatureVerification(..), verifySignature)
 import Network.HTTP.Simple
   (getResponseBody, getResponseStatusCode, httpLbs, parseRequest_)
+import Network.URI (parseURI, uriAuthority, uriRegName, uriScheme)
+import Text.Regex.TDFA ((=~))
 
 data ValidSNSMessage
   = SNSMessage Text
@@ -67,11 +70,23 @@ retrieveCertificate
   => SNSPayload
   -> ExceptT SNSNotificationValidationError m SignedCertificate
 retrieveCertificate SNSPayload {..} = do
-  response <- httpLbs $ parseRequest_ $ T.unpack snsSigningCertURL
-  pems <- unTry BadPem $ pemParseLBS $ getResponseBody response
+  certUrlStr <- unTryE id $ validateCertUrl snsSigningCertURL
+  response <- httpLbs $ parseRequest_ certUrlStr
+  pems <- unTryE BadPem $ pemParseLBS $ getResponseBody response
   cert <-
     fromMaybeM (throwE $ BadPem "Empty List") $ pemContent <$> headMay pems
-  unTry BadCert $ decodeSignedCertificate cert
+  unTryE BadCert $ decodeSignedCertificate cert
+
+validateCertUrl :: Text -> Either SNSNotificationValidationError String
+validateCertUrl certUrl = do
+  uri <- fromMaybeM (Left $ BadUri certUrlStr) $ parseURI certUrlStr
+  if uriScheme uri
+      == validScheme
+      && maybe "" uriRegName (uriAuthority uri)
+      =~ validRegPattern
+    then Right certUrlStr
+    else Left $ BadUri certUrlStr
+  where certUrlStr = T.unpack certUrl
 
 unsignedSignature :: SNSPayload -> ByteString
 unsignedSignature SNSPayload {..} =
@@ -110,16 +125,17 @@ handleSubscription = runExceptT . \case
   SNSSubscribe SNSSubscription {..} -> do
     response <- httpLbs $ parseRequest_ $ T.unpack snsSubscribeURL
     when (getResponseStatusCode response >= 300) $ do
-      throwE $ BadSubscription ()
+      throwE BadSubscription
     throwE SubscribeMessageResponded
   SNSUnsubscribe{} -> throwE UnsubscribeMessage
 
 data SNSNotificationValidationError
   = BadPem String
+  | BadUri String
   | BadSignature String
   | BadCert String
   | BadJSONParse String
-  | BadSubscription ()
+  | BadSubscription
   | InvalidPayload SignatureFailure
   | MissingMessageTypeHeader
   | UnsubscribeMessage
