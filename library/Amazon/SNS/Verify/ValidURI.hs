@@ -9,6 +9,14 @@ module Amazon.SNS.Verify.ValidURI
 
 import Amazon.SNS.Verify.Prelude
 
+_devScheme :: String
+_devScheme = "http:"
+
+_prodScheme :: String
+_prodScheme = "https:"
+
+{- FOURMOLU_DISABLE -}
+
 validScheme :: String
 validScheme =
 #ifdef DEVELOPMENT
@@ -17,12 +25,6 @@ validScheme =
   _prodScheme
 #endif
 
-_devScheme :: String
-_devScheme = "http:"
-
-_prodScheme :: String
-_prodScheme = "https:"
-
 validRegPattern :: String
 validRegPattern =
 #ifdef DEVELOPMENT
@@ -30,6 +32,8 @@ validRegPattern =
 #else
   prodRegPattern
 #endif
+
+{- FOURMOLU_ENABLE -}
 
 devRegPattern :: String
 devRegPattern = "^localhost$"

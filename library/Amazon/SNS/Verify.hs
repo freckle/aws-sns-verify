@@ -3,7 +3,7 @@ module Amazon.SNS.Verify
   , verifySNSMessageEither
   , verifySNSMessageJSON
   , verifySNSMessageJSONEither
-  , SNSNotificationValidationError(..)
+  , SNSNotificationValidationError (..)
   ) where
 
 import Amazon.SNS.Verify.Prelude
@@ -12,7 +12,7 @@ import Amazon.SNS.Verify.Payload
 import Amazon.SNS.Verify.Validate
 import Control.Error (hoistEither, runExceptT)
 import Data.Aeson (FromJSON, Value, eitherDecode)
-import Data.Aeson.Types (Result(Error, Success), fromJSON)
+import Data.Aeson.Types (Result (Error, Success), fromJSON)
 import Data.Bifunctor (first)
 import Data.ByteString.Lazy (fromStrict)
 import Data.Text.Encoding (encodeUtf8)
@@ -20,7 +20,6 @@ import Data.Text.Encoding (encodeUtf8)
 -- | Decode and verify an SNS message as JSON
 --
 -- The same as 'verifySNSMessage', but decodes the message as `JSON`.
---
 verifySNSMessageJSON :: (FromJSON a, MonadIO m) => Value -> m a
 verifySNSMessageJSON = unTryIO id <=< verifySNSMessageJSONEither
 
@@ -45,7 +44,6 @@ verifySNSMessageJSONEither value =
 --    or `UnsubscribeConfirmation`.
 -- 2. Verified against its signature.
 -- 3. And in the case of subscription events responded to.
---
 verifySNSMessage :: MonadIO m => Value -> m Text
 verifySNSMessage = unTryIO id <=< verifySNSMessageEither
 

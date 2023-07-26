@@ -20,7 +20,7 @@ throwIO = liftIO . Control.Exception.throwIO
 unTryIO :: (MonadIO m, Exception e) => (a -> e) -> Either a b -> m b
 unTryIO e = either (throwIO . e) pure
 
-unTryE :: (Monad m) => (a -> e) -> Either a b -> ExceptT e m b
+unTryE :: Monad m => (a -> e) -> Either a b -> ExceptT e m b
 unTryE e = either (throwE . e) pure
 
 fromMaybeM :: Monad m => m a -> Maybe a -> m a

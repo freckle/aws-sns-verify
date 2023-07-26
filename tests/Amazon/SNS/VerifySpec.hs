@@ -13,8 +13,8 @@ spec :: Spec
 spec = around_ useCertServer $ do
   describe "verifySNSMessage" $ do
     it "successfully validates an SNS notification" $ do
-      let
-        payload = [aesonQQ|
+      let payload =
+            [aesonQQ|
           { Message: "Some message"
           , MessageId: "78d4d7a0-a3eb-5c4d-834f-8d5fa9813ab6"
           , Timestamp: "2022-05-18T14:52:26.952Z"
@@ -31,8 +31,8 @@ spec = around_ useCertServer $ do
       x `shouldBe` "Some message"
 
     it "successfully confirms a subscription" $ do
-      let
-        payload = [aesonQQ|
+      let payload =
+            [aesonQQ|
           { Message: "Some message"
           , MessageId: "78d4d7a0-a3eb-5c4d-834f-8d5fa9813ab6"
           , Timestamp: "2022-05-18T14:52:26.952Z"
@@ -48,7 +48,7 @@ spec = around_ useCertServer $ do
           |]
 
       verifySNSMessage payload
-        `shouldThrow` (\case
-                        SubscribeMessageResponded -> True
-                        _ -> False
+        `shouldThrow` ( \case
+                          SubscribeMessageResponded -> True
+                          _ -> False
                       )

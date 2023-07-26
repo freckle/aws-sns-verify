@@ -1,8 +1,8 @@
 module Amazon.SNS.Verify.Payload
-  ( SNSPayload(..)
-  , SNSType(..)
-  , SNSNotification(..)
-  , SNSSubscription(..)
+  ( SNSPayload (..)
+  , SNSType (..)
+  , SNSNotification (..)
+  , SNSSubscription (..)
   ) where
 
 import Amazon.SNS.Verify.Prelude
@@ -69,7 +69,7 @@ newtype SNSNotification = SNSNotification
   deriving stock (Show, Eq, Generic)
 
 instance FromJSON SNSNotification where
-  parseJSON = genericParseJSON $ defaultOptions { fieldLabelModifier = drop 3 }
+  parseJSON = genericParseJSON $ defaultOptions {fieldLabelModifier = drop 3}
 
 data SNSSubscription = SNSSubscription
   { snsToken :: Text
@@ -78,4 +78,4 @@ data SNSSubscription = SNSSubscription
   deriving stock (Show, Eq, Generic)
 
 instance FromJSON SNSSubscription where
-  parseJSON = genericParseJSON $ defaultOptions { fieldLabelModifier = drop 3 }
+  parseJSON = genericParseJSON $ defaultOptions {fieldLabelModifier = drop 3}
