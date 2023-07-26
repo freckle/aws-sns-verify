@@ -1,1 +1,6 @@
 resolver: lts-16.31
+extra-deps:
+  - crypton-0.33
+  - crypton-x509-1.7.6
+  - crypton-x509-store-1.6.9
+  - crypton-x509-validation-1.6.12

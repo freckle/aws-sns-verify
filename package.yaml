@@ -85,8 +85,8 @@ library:
     - pem
     - regex-tdfa
     - text
-    - x509
-    - x509-validation
+    - crypton-x509
+    - crypton-x509-validation
   when:
     - condition: "flag(development)"
       cpp-options: -DDEVELOPMENT
@@ -109,4 +109,4 @@ tests:
       - text
       - wai
       - warp
-      - x509-validation
+      - crypton-x509-validation
