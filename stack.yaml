@@ -1,4 +1,5 @@
-resolver:
-  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/9.yaml
-packages:
-  - .
+resolver: lts-21.0
+extra-deps:
+  - crypton-x509-1.7.6
+  - crypton-x509-store-1.6.9
+  - crypton-x509-validation-1.6.12
