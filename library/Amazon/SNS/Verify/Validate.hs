@@ -2,6 +2,7 @@ module Amazon.SNS.Verify.Validate
   ( validateSnsMessage
   , validateSnsMessageWithSettings
   , ValidationSettings (..)
+  , defaultSettings
   , CertURIValidationSettings (..)
   , ExpectedURIScheme (..)
   , URISchemeValidationRegex (..)
