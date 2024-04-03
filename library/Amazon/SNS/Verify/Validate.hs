@@ -1,5 +1,10 @@
 module Amazon.SNS.Verify.Validate
   ( validateSnsMessage
+  , validateSnsMessageWithSettings
+  , ValidationSettings (..)
+  , CertURIValidationSettings (..)
+  , ExpectedURIScheme (..)
+  , URISchemeValidationRegex (..)
   , handleSubscription
   , SNSNotificationValidationError (..)
   , ValidSNSMessage (..)
@@ -8,7 +13,7 @@ module Amazon.SNS.Verify.Validate
 import Amazon.SNS.Verify.Prelude
 
 import Amazon.SNS.Verify.Payload
-import Amazon.SNS.Verify.ValidURI (validRegPattern, validScheme)
+import qualified Amazon.SNS.Verify.ValidURI as ValidURI
 import Control.Error (ExceptT, catMaybes, headMay, runExceptT, throwE)
 import Control.Monad (when)
 import Data.ByteArray.Encoding (Base (Base64), convertFromBase)
@@ -54,13 +59,45 @@ validateSnsMessage
   :: MonadIO m
   => SNSPayload
   -> m (Either SNSNotificationValidationError ValidSNSMessage)
-validateSnsMessage payload@SNSPayload {..} = runExceptT $ do
+validateSnsMessage = validateSnsMessageWithSettings defaultSettings
+
+newtype ExpectedURIScheme = ExpectedURIScheme String
+  deriving stock (Show, Eq)
+
+newtype URISchemeValidationRegex = URISchemeValidationRegex String
+  deriving stock (Show, Eq)
+
+data CertURIValidationSettings = CertURIValidationSettings
+  { expectedUriScheme :: ExpectedURIScheme
+  , validRegPattern :: URISchemeValidationRegex
+  }
+
+data ValidationSettings = ValidationSettings
+  { certUriValidationSettings :: CertURIValidationSettings
+  }
+
+defaultSettings :: ValidationSettings
+defaultSettings =
+  ValidationSettings
+    { certUriValidationSettings =
+        CertURIValidationSettings
+          { expectedUriScheme = ExpectedURIScheme ValidURI.validScheme
+          , validRegPattern = URISchemeValidationRegex ValidURI.validRegPattern
+          }
+    }
+
+validateSnsMessageWithSettings
+  :: MonadIO m
+  => ValidationSettings
+  -> SNSPayload
+  -> m (Either SNSNotificationValidationError ValidSNSMessage)
+validateSnsMessageWithSettings settings payload@SNSPayload {..} = runExceptT $ do
   signature <-
     unTryE BadSignature
       $ convertFromBase Base64
       $ encodeUtf8
         snsSignature
-  signedCert <- retrieveCertificate payload
+  signedCert <- retrieveCertificate settings payload
   let valid =
         verifySignature
           (SignatureALG HashSHA1 PubKeyALG_RSA)
@@ -76,27 +113,38 @@ validateSnsMessage payload@SNSPayload {..} = runExceptT $ do
 
 retrieveCertificate
   :: MonadIO m
-  => SNSPayload
+  => ValidationSettings
+  -> SNSPayload
   -> ExceptT SNSNotificationValidationError m SignedCertificate
-retrieveCertificate SNSPayload {..} = do
-  certUrlStr <- unTryE id $ validateCertUrl snsSigningCertURL
+retrieveCertificate ValidationSettings {..} SNSPayload {..} = do
+  certUrlStr <-
+    unTryE id $ validateCertUrl certUriValidationSettings snsSigningCertURL
   response <- httpLbs $ parseRequest_ certUrlStr
   pems <- unTryE BadPem $ pemParseLBS $ getResponseBody response
   cert <-
     fromMaybeM (throwE $ BadPem "Empty List") $ pemContent <$> headMay pems
   unTryE BadCert $ decodeSignedCertificate cert
 
-validateCertUrl :: Text -> Either SNSNotificationValidationError String
-validateCertUrl certUrl = do
-  uri <- fromMaybeM (Left $ BadUri certUrlStr) $ parseURI certUrlStr
-  if uriScheme uri
-    == validScheme
-    && maybe "" uriRegName (uriAuthority uri)
-    =~ validRegPattern
-    then Right certUrlStr
-    else Left $ BadUri certUrlStr
- where
-  certUrlStr = T.unpack certUrl
+validateCertUrl
+  :: CertURIValidationSettings
+  -> Text
+  -> Either SNSNotificationValidationError String
+validateCertUrl
+  ( CertURIValidationSettings
+      { expectedUriScheme = ExpectedURIScheme validScheme
+      , validRegPattern = URISchemeValidationRegex validRegPattern
+      }
+    )
+  certUrl = do
+    uri <- fromMaybeM (Left $ BadUri certUrlStr) $ parseURI certUrlStr
+    if uriScheme uri
+      == validScheme
+      && maybe "" uriRegName (uriAuthority uri)
+      =~ validRegPattern
+      then Right certUrlStr
+      else Left $ BadUri certUrlStr
+   where
+    certUrlStr = T.unpack certUrl
 
 unsignedSignature :: SNSPayload -> ByteString
 unsignedSignature SNSPayload {..} =
