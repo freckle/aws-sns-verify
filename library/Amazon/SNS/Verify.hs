@@ -1,8 +1,13 @@
 module Amazon.SNS.Verify
   ( verifySNSMessage
+  , verifySNSMessageWithSettings
   , verifySNSMessageEither
+  , verifySNSMessageEitherWithSettings
   , verifySNSMessageJSON
+  , verifySNSMessageJSONWithSettings
   , verifySNSMessageJSONEither
+  , verifySNSMessageJSONEitherWithSettings
+  , defaultSettings
   , SNSNotificationValidationError (..)
   ) where
 
@@ -21,16 +26,27 @@ import Data.Text.Encoding (encodeUtf8)
 --
 -- The same as 'verifySNSMessage', but decodes the message as `JSON`.
 verifySNSMessageJSON :: (FromJSON a, MonadIO m) => Value -> m a
-verifySNSMessageJSON = unTryIO id <=< verifySNSMessageJSONEither
+verifySNSMessageJSON = verifySNSMessageJSONWithSettings defaultSettings
+
+verifySNSMessageJSONWithSettings
+  :: (FromJSON a, MonadIO m) => ValidationSettings -> Value -> m a
+verifySNSMessageJSONWithSettings settings = unTryIO id <=< verifySNSMessageJSONEitherWithSettings settings
 
 verifySNSMessageJSONEither
   :: (FromJSON a, MonadIO m)
   => Value
   -> m (Either SNSNotificationValidationError a)
-verifySNSMessageJSONEither value =
+verifySNSMessageJSONEither = verifySNSMessageJSONEitherWithSettings defaultSettings
+
+verifySNSMessageJSONEitherWithSettings
+  :: (FromJSON a, MonadIO m)
+  => ValidationSettings
+  -> Value
+  -> m (Either SNSNotificationValidationError a)
+verifySNSMessageJSONEitherWithSettings settings value =
   join
     . traverse (first BadJSONParse . eitherDecode . fromStrict . encodeUtf8)
-    <$> verifySNSMessageEither value
+    <$> verifySNSMessageEitherWithSettings settings value
 
 -- | Decode and verify an SNS message
 --
@@ -47,11 +63,22 @@ verifySNSMessageJSONEither value =
 verifySNSMessage :: MonadIO m => Value -> m Text
 verifySNSMessage = unTryIO id <=< verifySNSMessageEither
 
+verifySNSMessageWithSettings
+  :: MonadIO m => ValidationSettings -> Value -> m Text
+verifySNSMessageWithSettings settings = unTryIO id <=< verifySNSMessageEitherWithSettings settings
+
 verifySNSMessageEither
   :: MonadIO m => Value -> m (Either SNSNotificationValidationError Text)
-verifySNSMessageEither value = runExceptT $ do
+verifySNSMessageEither = verifySNSMessageEitherWithSettings defaultSettings
+
+verifySNSMessageEitherWithSettings
+  :: MonadIO m
+  => ValidationSettings
+  -> Value
+  -> m (Either SNSNotificationValidationError Text)
+verifySNSMessageEitherWithSettings settings value = runExceptT $ do
   payload <- hoistEither $ parseSNSPayload value
-  verified <- hoistEither =<< validateSnsMessage payload
+  verified <- hoistEither =<< validateSnsMessageWithSettings settings payload
   hoistEither =<< handleSubscription verified
 
 parseSNSPayload :: Value -> Either SNSNotificationValidationError SNSPayload
