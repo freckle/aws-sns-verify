@@ -7,6 +7,7 @@ module Amazon.SNS.Verify
   , verifySNSMessageJSONWithSettings
   , verifySNSMessageJSONEither
   , verifySNSMessageJSONEitherWithSettings
+  , defaultSettings
   , SNSNotificationValidationError (..)
   ) where
 
