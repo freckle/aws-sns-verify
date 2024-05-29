@@ -10,7 +10,7 @@ import Amazon.SNS.Verify.Prelude
 import Amazon.SNS.Verify.Payload
 import Amazon.SNS.Verify.ValidURI (validRegPattern, validScheme)
 import Control.Error (ExceptT, catMaybes, headMay, runExceptT, throwE)
-import Control.Monad (when)
+import Control.Monad (unless, when)
 import Data.ByteArray.Encoding (Base (Base64), convertFromBase)
 import Data.PEM (pemContent, pemParseLBS)
 import qualified Data.Text as T
@@ -79,22 +79,27 @@ retrieveCertificate
   => SNSPayload
   -> ExceptT SNSNotificationValidationError m SignedCertificate
 retrieveCertificate SNSPayload {..} = do
-  certUrlStr <- unTryE id $ validateCertUrl snsSigningCertURL
+  certUrlStr <- validateCertUrl snsSigningCertURL
   response <- httpLbs $ parseRequest_ certUrlStr
   pems <- unTryE BadPem $ pemParseLBS $ getResponseBody response
   cert <-
     fromMaybeM (throwE $ BadPem "Empty List") $ pemContent <$> headMay pems
   unTryE BadCert $ decodeSignedCertificate cert
 
-validateCertUrl :: Text -> Either SNSNotificationValidationError String
+validateCertUrl
+  :: Monad m => Text -> ExceptT SNSNotificationValidationError m String
 validateCertUrl certUrl = do
-  uri <- fromMaybeM (Left $ BadUri certUrlStr) $ parseURI certUrlStr
-  if uriScheme uri
-    == validScheme
-    && maybe "" uriRegName (uriAuthority uri)
-    =~ validRegPattern
-    then Right certUrlStr
-    else Left $ BadUri certUrlStr
+  uri <- fromMaybeM (throwE $ BadUri certUrlStr) $ parseURI certUrlStr
+
+  let
+    scheme = uriScheme uri
+    mDomain = uriRegName <$> uriAuthority uri
+
+  unless (scheme == validScheme) $ throwE $ BadScheme scheme
+  domain <- fromMaybeM (throwE $ NoAuthority certUrlStr) mDomain
+  unless (domain =~ validRegPattern) $ throwE $ BadDomain domain
+
+  pure certUrlStr
  where
   certUrlStr = T.unpack certUrl
 
@@ -146,6 +151,9 @@ handleSubscription =
 data SNSNotificationValidationError
   = BadPem String
   | BadUri String
+  | BadScheme String
+  | NoAuthority String
+  | BadDomain String
   | BadSignature String
   | BadCert String
   | BadJSONParse String
