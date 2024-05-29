@@ -102,7 +102,7 @@ spec = around_ useCertServer $ do
                               "SynthesisTaskNotification { TaskId: 680a1f1b-f3ae-4474-aa8f-3b6dfe52e656, Status: COMPLETED }"
                         }
                 }
-      go `shouldReturn` Left (BadUri "http://attacker.com/evil.pem")
+      go `shouldReturn` Left (BadDomain "attacker.com")
 
     it "successfully validates an SNS subscription" $ do
       -- pendingWith "need valid subscription payload"
