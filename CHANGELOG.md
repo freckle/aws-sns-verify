@@ -1,5 +1,10 @@
 ## [_Unreleased_](https://github.com/freckle/aws-sns-verify/compare/v0.0.0.3...main)
 
+- Return more specific errors in URI validation
+
+  Rather than respond `BadUri` for non-URI, unexpected scheme, or invalid domain
+  name, we now have 3 distinct error constructors for each of those.
+
 ## [v0.0.0.3](https://github.com/freckle/aws-sns-verify/compare/v0.0.0.2...v0.0.0.3)
 
 - Migrate to `crypton-x509*`
