@@ -95,9 +95,9 @@ validateCertUrl certUrl = do
     scheme = uriScheme uri
     mDomain = uriRegName <$> uriAuthority uri
 
-  unless (scheme == validScheme) $ throwE $ BadScheme scheme
+  unless (scheme == validScheme) $ throwE $ BadScheme scheme validScheme
   domain <- fromMaybeM (throwE $ NoAuthority certUrlStr) mDomain
-  unless (domain =~ validRegPattern) $ throwE $ BadDomain domain
+  unless (domain =~ validRegPattern) $ throwE $ BadDomain domain validRegPattern
 
   pure certUrlStr
  where
@@ -151,9 +151,9 @@ handleSubscription =
 data SNSNotificationValidationError
   = BadPem String
   | BadUri String
-  | BadScheme String
+  | BadScheme String String
   | NoAuthority String
-  | BadDomain String
+  | BadDomain String String
   | BadSignature String
   | BadCert String
   | BadJSONParse String
@@ -163,4 +163,17 @@ data SNSNotificationValidationError
   | UnsubscribeMessage
   | SubscribeMessageResponded
   deriving stock (Show, Eq)
-  deriving anyclass (Exception)
+
+instance Exception SNSNotificationValidationError where
+  displayException = \case
+    BadScheme actual expected ->
+      "BadScheme, expected "
+        <> expected
+        <> " but got "
+        <> actual
+    BadDomain actual regex ->
+      "BadDomain, "
+        <> actual
+        <> " does not match the regular expression "
+        <> regex
+    ex -> show ex
