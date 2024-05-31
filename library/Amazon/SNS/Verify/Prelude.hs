@@ -6,7 +6,7 @@ module Amazon.SNS.Verify.Prelude
 import Prelude as X
 
 import Control.Error (ExceptT, throwE)
-import Control.Exception as X (Exception)
+import Control.Exception as X (Exception (..))
 import qualified Control.Exception
 import Control.Monad as X (join, (<=<))
 import Control.Monad.IO.Class as X (MonadIO, liftIO)
