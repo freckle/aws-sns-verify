@@ -23,8 +23,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: freckle/stack-action@v5
+        env:
+          STACK_YAML: ${{ matrix.stack-yaml }}
         with:
-          stack-yaml: ${{ matrix.stack-yaml }}
           stack-arguments: --flag aws-sns-verify:development
 
   lint:
