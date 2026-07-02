@@ -1,4 +1,12 @@
-## [_Unreleased_](https://github.com/freckle/aws-sns-verify/compare/v0.0.0.3...main)
+## [_Unreleased_](https://github.com/freckle/aws-sns-verify/compare/v0.1.0.0...main)
+
+## [v0.1.0.0](https://github.com/freckle/aws-sns-verify/compare/v0.0.0.3...v0.1.0.0)
+
+- Replace `memory` with `ram` for `crypton-1.1`
+
+- Raise a slew of lower bounds, to accomplish the above
+
+- Drop support for GHCs lower than 9.4, to accomplish the above
 
 - Return more specific errors in URI validation
 

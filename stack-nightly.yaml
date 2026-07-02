@@ -1,1 +1,5 @@
-resolver: nightly-2023-07-25
+resolver: nightly-2026-06-28
+extra-deps:
+  - crypton-x509-1.9.1
+  - crypton-x509-validation-1.9.1
+  - ram-0.22.0

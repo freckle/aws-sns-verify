@@ -1,11 +1,11 @@
 cabal-version: 1.18
 
--- This file has been generated from package.yaml by hpack version 0.35.2.
+-- This file has been generated from package.yaml by hpack version 0.39.1.
 --
 -- see: https://github.com/sol/hpack
 
 name:           aws-sns-verify
-version:        0.0.0.3
+version:        0.1.0.0
 synopsis:       Parse and verify AWS SNS messages
 description:    Please see the README on GitHub at <https://github.com/freckle/aws-sns-verify#readme>
 category:       Network, Web, AWS, Amazon, Cloud, Cryptography, Distributed-Computing
@@ -73,13 +73,13 @@ library
       aeson
     , base >=4.7 && <5
     , bytestring
-    , crypton-x509
-    , crypton-x509-validation
+    , crypton-x509 >=1.9.0
+    , crypton-x509-validation >=1.9.0
     , errors
     , http-conduit
-    , memory
     , network-uri
     , pem
+    , ram
     , regex-tdfa
     , text
   default-language: Haskell2010

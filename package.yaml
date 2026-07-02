@@ -1,5 +1,5 @@
 name: aws-sns-verify
-version: 0.0.0.3
+version: 0.1.0.0
 github: "freckle/aws-sns-verify"
 license: MIT
 author: "Freckle"
@@ -80,13 +80,13 @@ library:
     - bytestring
     - errors
     - http-conduit
-    - memory
+    - ram
     - network-uri
     - pem
     - regex-tdfa
     - text
-    - crypton-x509
-    - crypton-x509-validation
+    - crypton-x509 >= 1.9.0 # force crypton 1.1 and ram
+    - crypton-x509-validation >= 1.9.0
   when:
     - condition: "flag(development)"
       cpp-options: -DDEVELOPMENT
