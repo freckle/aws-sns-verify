@@ -1,5 +1,5 @@
 name: aws-sns-verify
-version: 0.0.0.3
+version: 0.1.0.0
 github: "freckle/aws-sns-verify"
 license: MIT
 author: "Freckle"
